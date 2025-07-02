@@ -22,9 +22,24 @@ function Part_3() {
   const headingRef = useRef(null);
   const productRefs = useRef([]);
   const arrowMobileRef = useRef(null);
+  const scrollContainerRef = useRef(null);
+
+  // Scroll logic for arrows
+  const scrollByCard = (direction) => {
+    const container = scrollContainerRef.current;
+    if (!container || !productRefs.current.length) return;
+
+    const card = productRefs.current[0];
+    const cardWidth = card?.offsetWidth || 300; // Fallback if card not measured
+    const gap = 16; // Tailwind's gap-4 = 16px
+
+    container.scrollBy({
+      left: direction === "right" ? cardWidth + gap : -(cardWidth + gap),
+      behavior: "smooth",
+    });
+  };
 
   useGSAP(() => {
-    // Set initial styles
     gsap.set(
       [
         bigBtnRef.current,
@@ -43,7 +58,6 @@ function Part_3() {
       opacity: 0,
     });
 
-    // Animate Big Button
     gsap.to(bigBtnRef.current, {
       y: 0,
       opacity: 1,
@@ -55,7 +69,6 @@ function Part_3() {
       },
     });
 
-    // Animate Heading
     gsap.to(headingRef.current, {
       y: 0,
       opacity: 1,
@@ -67,7 +80,6 @@ function Part_3() {
       },
     });
 
-    // Arrow Buttons (desktop)
     gsap.to(arrowRef.current, {
       y: 0,
       opacity: 1,
@@ -79,7 +91,6 @@ function Part_3() {
       },
     });
 
-    // Animate Product Cards (staggered)
     gsap.to(productRefs.current, {
       opacity: 1,
       y: 0,
@@ -93,7 +104,6 @@ function Part_3() {
       },
     });
 
-    // Mobile Arrows
     gsap.to(arrowMobileRef.current, {
       y: 0,
       opacity: 1,
@@ -111,10 +121,7 @@ function Part_3() {
       <div className="w-full h-fit mt-[40px] xl:mt-[60px] px-6 sm:px-8 md:px-10 lg:px-16 xl:px-20">
         {/* Button & Headings & ArrowButtons */}
         <div className="w-full h-fit xl:flex justify-between items-center">
-          {/* Button  */}
           <BigButton ref={bigBtnRef} label={"Best Selling Products"} />
-
-          {/* Heading  */}
           <h1
             ref={headingRef}
             className="w-[300px] sm:w-[600px] md:w-[700px] font-['Inter_Reg'] text-[#2D3B36] text-left xl:text-center text-[30px] sm:text-[50px] md:text-[60px] leading-9 sm:leading-13 md:leading-16 mt-[40px] tracking-[-0.5px]"
@@ -122,12 +129,20 @@ function Part_3() {
             Skincare That Brings Out Your Natural Radiance
           </h1>
 
-          {/* Left Right Arrow Buttons  */}
-          <ArrowButtons ref={arrowRef} styles={"hidden xl:flex"} />
+          {/* ✅ Arrow Buttons Desktop */}
+          <ArrowButtons
+            ref={arrowRef}
+            styles={"hidden xl:flex"}
+            onLeftClick={() => scrollByCard("left")}
+            onRightClick={() => scrollByCard("right")}
+          />
         </div>
 
-        {/* Product Cards  */}
-        <div className="w-full h-fit overflow-x-auto">
+        {/* ✅ Product Cards */}
+        <div
+          ref={scrollContainerRef}
+          className="w-full h-fit overflow-x-auto scroll-smooth"
+        >
           <div className="w-fit lg:w-full h-fit flex items-center gap-4 mt-[40px] xl:mt-[60px]">
             {Products.map(({ name, price, src }, index) => (
               <ProductCard
@@ -141,10 +156,12 @@ function Part_3() {
           </div>
         </div>
 
-        {/* Left Right Arrow Buttons  */}
+        {/* ✅ Arrow Buttons Mobile */}
         <ArrowButtons
           ref={arrowMobileRef}
           styles={"mt-[40px] xl:mt-[60px] xl:hidden mx-auto"}
+          onLeftClick={() => scrollByCard("left")}
+          onRightClick={() => scrollByCard("right")}
         />
       </div>
     </div>

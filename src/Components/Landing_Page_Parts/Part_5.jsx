@@ -28,6 +28,22 @@ function Part_5() {
   const tagsRef = useRef([]);
   const cardsRef = useRef([]);
   const arrowsRef = useRef(null);
+  const scrollContainerRef = useRef(null);
+
+  // Scroll logic for arrows
+  const scrollByCard = (direction) => {
+    const container = scrollContainerRef.current;
+    if (!container || !cardsRef.current.length) return;
+
+    const card = cardsRef.current[0];
+    const cardWidth = card?.offsetWidth || 300; // Fallback if card not measured
+    const gap = 16; // Tailwind's gap-4 = 16px
+
+    container.scrollBy({
+      left: direction === "right" ? cardWidth + gap : -(cardWidth + gap),
+      behavior: "smooth",
+    });
+  };
 
   useGSAP(() => {
     gsap.set(
@@ -103,7 +119,7 @@ function Part_5() {
         </h1>
 
         {/* Tags */}
-        <div className="w-fit md:mx-auto flex flex-wrap items-center gap-2">
+        <div className="w-fit xl:mx-auto flex flex-wrap items-center gap-2">
           {FunctionTags.map((tag, i) => (
             <WorkTags
               key={i}
@@ -115,7 +131,7 @@ function Part_5() {
         </div>
 
         {/* Product Cards */}
-        <div className="w-full h-fit relative overflow-x-auto">
+        <div ref={scrollContainerRef} className="w-full h-fit relative overflow-x-auto">
           <div className="w-fit lg:w-full h-fit flex items-center gap-4">
             {Products.map(({ name, price, src }, i) => (
               <ProductCard
@@ -130,9 +146,12 @@ function Part_5() {
         </div>
 
         {/* Arrows */}
-        <div ref={arrowsRef}>
-          <ArrowButtons styles={"md:hidden mx-auto"} />
-        </div>
+        <ArrowButtons
+          ref={arrowsRef}
+          styles={"md:hidden mx-auto"}
+          onLeftClick={() => scrollByCard("left")}
+          onRightClick={() => scrollByCard("right")}
+        />
       </div>
     </div>
   );
