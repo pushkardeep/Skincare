@@ -12,16 +12,16 @@ function Nav() {
 
       <div className="hidden w-fit h-fit md:flex justify-center items-center gap-8 relative">
         {["All Products", "Serum", "Susscreen", "Bundle"].map((elem, i) => (
-          <div key={i} className="group w-fit h-fit relative flex flex-col items-center justify-center transition-all duration-300 ease-in-out overflow-hidden">
+          <div key={i} className="group w-fit h-fit relative flex flex-col items-center justify-center transition-all duration-300 ease-in-out overflow-hidden cursor-pointer">
             <span
-              className="font-['Inter_Reg'] text-[#2D3B36] text-[12px] transition-transform duration-300 ease-in-out group-hover:-translate-y-[150%] whitespace-nowrap cursor-pointer"
+              className="font-['Inter_Reg'] text-[#2D3B36] text-[12px] transition-transform duration-300 ease-in-out group-hover:-translate-y-[150%] whitespace-nowrap"
             >
               {elem}
             </span>
 
             <span
               key={i}
-              className="font-['Inter_Reg'] text-[#2D3B36] text-[12px] absolute top-[150%] transition-transform duration-300 ease-in-out group-hover:-translate-y-[150%] whitespace-nowrap cursor-pointer"
+              className="font-['Inter_Reg'] text-[#2D3B36] text-[12px] absolute top-[150%] transition-transform duration-300 ease-in-out group-hover:-translate-y-[150%] whitespace-nowrap"
             >
               {elem}
             </span>

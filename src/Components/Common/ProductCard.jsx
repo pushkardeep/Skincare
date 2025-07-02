@@ -1,5 +1,8 @@
 import React, { forwardRef } from "react";
 
+// Icons
+import { ShoppingCart } from "lucide-react";
+
 const ProductCard = forwardRef(({ img, name, price }, ref) => {
   return (
     <div
@@ -17,12 +20,20 @@ const ProductCard = forwardRef(({ img, name, price }, ref) => {
             FROM ${price}
           </h6>
         </div>
-        <div className="w-[50px] aspect-square bg-[#2D3B361A] rounded-[5px] flex justify-center items-center">
-          <img
-            className="w-[50%] aspect-square object-cover"
-            src="/Images/Icons/cart.png"
-            alt="Cart"
-          />
+
+        <div className="group w-[50px] aspect-square bg-[#2D3B361A] rounded-[5px] flex justify-center items-center cursor-pointer">
+          <div className="w-fit h-fit relative transition-all duration-300 ease-in-out  overflow-hidden">
+            <ShoppingCart
+              size={24}
+              color="#2D3B36"
+              className="transition-transform duration-300 ease-in-out group-hover:-translate-y-[150%]"
+            />
+            <ShoppingCart
+              size={24}
+              color="#2D3B36"
+              className="absolute top-[150%] transition-transform duration-300 ease-in-out group-hover:-translate-y-[150%]"
+            />
+          </div>
         </div>
       </div>
     </div>
